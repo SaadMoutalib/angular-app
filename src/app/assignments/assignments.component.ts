@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AssignmentsService } from '../shared/assignments.service';
 import { Assignment } from './assignment.model';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 
 @Component({
   selector: 'app-assignments',
@@ -21,11 +24,21 @@ export class AssignmentsComponent implements OnInit {
   nextPage: number = 0;
 
   // pour l'affichage en table
-  displayedColumns: string[] = ['demo-id', 'demo-nom', 'demo-dateDeRendu', 'demo-rendu'];
-
+  displayedColumns: string[] = [
+    'demo-id',
+    'demo-nom',
+    'demo-dateDeRendu',
+    'demo-rendu',
+    'actions',
+  ];
+  clickedRows = new Set<Assignment>();
   assignments: Assignment[] = [];
 
-  constructor(private assignmentService: AssignmentsService) {}
+  constructor(
+    private assignmentService: AssignmentsService,
+    private router: Router,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     // appelé AVANT l'affichage (juste après le constructeur)
@@ -35,6 +48,28 @@ export class AssignmentsComponent implements OnInit {
     // du cloud...
 
     this.getAssignments();
+  }
+
+  showAssignment(assignment: Assignment) {
+    let route = 'assignment/' + assignment.id;
+    this.router.navigate([route]);
+  }
+
+  deletAssignment(assignment: Assignment) {
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
+      data: assignment,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.assignmentService
+          .deleteAssignment(assignment)
+          .subscribe((reponse) => {
+            console.log('Réponse du serveur : ' + reponse.message);
+            this.getAssignments();
+          });
+      }
+    });
   }
 
   getAssignments() {
