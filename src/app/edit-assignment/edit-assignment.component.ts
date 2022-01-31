@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Assignment } from '../assignments/assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-edit-assignment',
@@ -15,6 +16,7 @@ export class EditAssignmentComponent implements OnInit {
   dateDeRendu?:Date;
 
   constructor(private route:ActivatedRoute,
+              private notificationService: NotificationService,
               private router:Router,
               private assignmentsService:AssignmentsService) { }
 
@@ -44,7 +46,10 @@ export class EditAssignmentComponent implements OnInit {
   }
 
   onSaveAssignment() {
-    if(!this.assignment) return;
+    if(!this.assignment) {
+      this.notificationService.warn(':: Element Non Modifier!!');
+      return;
+    }
 
     if(this.nomAssignment) {
       this.assignment.nom = this.nomAssignment;
@@ -60,6 +65,7 @@ export class EditAssignmentComponent implements OnInit {
       console.log("Réponse du serveur : " + reponse.message);
 
       // on re-affiche la liste
+      this.notificationService.success(':: Modifier avec succes!!');
       this.router.navigate(["/home"]);
     })
   }

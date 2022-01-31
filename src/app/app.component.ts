@@ -12,9 +12,7 @@ import { AuthService } from './shared/auth.service';
 
 export class AppComponent {
   titre="Application de gestion des assignments";
-
   constructor(private authService:AuthService, private router:Router, private assignmentService: AssignmentsService) {}
-
   onLogin() {
     if(this.authService.loggedIn) {
       this.authService.logOut();
@@ -22,16 +20,5 @@ export class AppComponent {
     } else {
       this.authService.logIn();
     }
-  }
-
-  initialiserLaBaseAvecDonneesDeTest() {
-    this.assignmentService.peuplerBDAvecForkJoin()
-    .subscribe(() => {
-      console.log("##### initialiserLaBaseAvecDonneesDeTest : DONNES AJOUTEES ! ######");
-      // et on va afficher la liste des assignments
-      this.router.navigate(["/home"], {replaceUrl:true});
-    })
-
-
   }
 }

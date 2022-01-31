@@ -4,6 +4,7 @@ import { Assignment } from './assignment.model';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-assignments',
@@ -37,6 +38,7 @@ export class AssignmentsComponent implements OnInit {
   constructor(
     private assignmentService: AssignmentsService,
     private router: Router,
+    private authService:AuthService,
     public dialog: MatDialog
   ) {}
 
@@ -49,12 +51,22 @@ export class AssignmentsComponent implements OnInit {
 
     this.getAssignments();
   }
-
+  deconnexion(){
+    this.authService.logOut();
+    this.router.navigate(["/authen"]);
+  }
   showAssignment(assignment: Assignment) {
     let route = 'assignment/' + assignment.id;
     this.router.navigate([route]);
   }
-
+  initialiserLaBaseAvecDonneesDeTest() {
+    this.assignmentService.peuplerBDAvecForkJoin()
+    .subscribe(() => {
+      console.log("##### initialiserLaBaseAvecDonneesDeTest : DONNES AJOUTEES ! ######");
+      // et on va afficher la liste des assignments
+      this.router.navigate(["/home"], {replaceUrl:true});
+    })
+  }
   deletAssignment(assignment: Assignment) {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       data: assignment,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Assignment } from '../assignments/assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-add-assignment',
@@ -14,7 +15,7 @@ export class AddAssignmentComponent implements OnInit {
   dateDeRendu?:Date = undefined;
 
 
-  constructor(private assignmentService:AssignmentsService,
+  constructor(private assignmentService:AssignmentsService,private notificationService: NotificationService,
               private router:Router) { }
 
   ngOnInit(): void {
@@ -41,6 +42,10 @@ export class AddAssignmentComponent implements OnInit {
         // a bien été ajouté (ça peut prendre du temps si on utilise une BD distante)
         this.router.navigate(["/home"]);
       });
+      this.notificationService.success(':: Ajouter avec succes!!');
+    }
+    else {
+      this.notificationService.warn(':: Element Non Ajouter!!');
     }
   }
 

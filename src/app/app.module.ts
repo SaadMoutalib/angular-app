@@ -30,15 +30,20 @@ import { Routes, RouterModule } from '@angular/router';
 import { EditAssignmentComponent } from './edit-assignment/edit-assignment.component';
 import { AuthGuard } from './shared/auth.guard';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+import { AuthenComponent } from './authen/authen.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AssignmentsComponent,
+    component: AuthenComponent,
   },
   {
     path: 'home',
     component: AssignmentsComponent,
+  },
+  {
+    path:'authen',
+    component:AuthenComponent
   },
   {
     path: 'add',
@@ -64,6 +69,7 @@ const routes: Routes = [
     AddAssignmentComponent,
     EditAssignmentComponent,
     DialogBoxComponent,
+    AuthenComponent,
   ],
   imports: [
     BrowserModule,
