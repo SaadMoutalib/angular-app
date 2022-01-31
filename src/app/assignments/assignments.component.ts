@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { AuthService } from '../shared/auth.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-assignments',
@@ -38,8 +39,9 @@ export class AssignmentsComponent implements OnInit {
   constructor(
     private assignmentService: AssignmentsService,
     private router: Router,
-    private authService:AuthService,
-    public dialog: MatDialog
+    private authService: AuthService,
+    public dialog: MatDialog,
+    private notifService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -51,21 +53,22 @@ export class AssignmentsComponent implements OnInit {
 
     this.getAssignments();
   }
-  deconnexion(){
+  deconnexion() {
     this.authService.logOut();
-    this.router.navigate(["/authen"]);
+    this.router.navigate(['/authen']);
   }
   showAssignment(assignment: Assignment) {
     let route = 'assignment/' + assignment.id;
     this.router.navigate([route]);
   }
   initialiserLaBaseAvecDonneesDeTest() {
-    this.assignmentService.peuplerBDAvecForkJoin()
-    .subscribe(() => {
-      console.log("##### initialiserLaBaseAvecDonneesDeTest : DONNES AJOUTEES ! ######");
+    this.assignmentService.peuplerBDAvecForkJoin().subscribe(() => {
+      console.log(
+        '##### initialiserLaBaseAvecDonneesDeTest : DONNES AJOUTEES ! ######'
+      );
       // et on va afficher la liste des assignments
-      this.router.navigate(["/home"], {replaceUrl:true});
-    })
+      this.router.navigate(['/home'], { replaceUrl: true });
+    });
   }
   deletAssignment(assignment: Assignment) {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
@@ -79,6 +82,9 @@ export class AssignmentsComponent implements OnInit {
           .subscribe((reponse) => {
             console.log('Réponse du serveur : ' + reponse.message);
             this.getAssignments();
+            this.notifService.success(
+              assignment.nom + ' Supprimer avec succees'
+            );
           });
       }
     });

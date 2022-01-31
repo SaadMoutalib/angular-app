@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Assignment } from '../assignments/assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
 import { AuthService } from '../shared/auth.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -16,7 +17,8 @@ export class AssignmentDetailComponent implements OnInit {
     private assignmentsService: AssignmentsService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +45,10 @@ export class AssignmentDetailComponent implements OnInit {
 
           // on navigue vers la page d'accueil pour afficher la liste à jour
           this.router.navigate(['/home']);
+
+          this.notificationService.success(
+            this.assignmentTransmis?.nom + ' Modifier avec succes!!'
+          );
         });
     }
   }
@@ -57,6 +63,10 @@ export class AssignmentDetailComponent implements OnInit {
 
           // on navigue vers la page d'accueil pour afficher la liste à jour
           this.router.navigate(['/home']);
+
+          this.notificationService.success(
+            this.assignmentTransmis?.nom + ' Supprimer avec succes!!'
+          );
         });
       this.assignmentTransmis = undefined;
     }

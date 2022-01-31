@@ -18,8 +18,8 @@ export class AssignmentsService {
     private http: HttpClient
   ) {}
 
-  url = 'http://localhost:8010/api/assignments';
-  //url = "https://api-emsi-rabat-2022.herokuapp.com/api/assignments";
+  //url = 'http://localhost:8010/api/assignments';
+  url = 'https://devoir-angular-api.herokuapp.com/api/assignments';
 
   getAssignments(): Observable<Assignment[]> {
     return this.http.get<Assignment[]>(this.url);
@@ -59,7 +59,7 @@ export class AssignmentsService {
 
   updateAssignment(assignment: Assignment): Observable<any> {
     this.loggingService.log(assignment.nom, 'Modifié');
-    return this.http.post<Assignment>(this.url, assignment);
+    return this.http.put<Assignment>(this.url, assignment);
   }
 
   deleteAssignment(assignment: Assignment): Observable<any> {

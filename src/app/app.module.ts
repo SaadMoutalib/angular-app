@@ -19,6 +19,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { AssignmentsComponent } from './assignments/assignments.component';
@@ -42,8 +43,8 @@ const routes: Routes = [
     component: AssignmentsComponent,
   },
   {
-    path:'authen',
-    component:AuthenComponent
+    path: 'authen',
+    component: AuthenComponent,
   },
   {
     path: 'add',
@@ -92,6 +93,7 @@ const routes: Routes = [
     MatPaginatorModule,
     MatDialogModule,
     MatSliderModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
